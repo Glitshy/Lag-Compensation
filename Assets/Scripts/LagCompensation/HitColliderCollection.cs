@@ -19,6 +19,15 @@ namespace PG.LagCompensation
 
         public HitColliderGeneric GetHitColliderAtIndex(int i)
 		{
+            /*
+            if (i >= hitColliders.Count || i < 0)
+			{
+                Debug.LogError("Index " + i + " out of range for list with count " + hitColliders.Count + " (" + this.name + ")");
+                return null;
+
+            }
+            */
+
             return hitColliders[i];
         }
 
