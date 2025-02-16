@@ -34,7 +34,6 @@ namespace PG.LagCompensation
         public static bool ColliderCastTransform(Vector3 origin, Vector3 direction, float range, out ColliderCastHit hit, out HitColliderCollection collection, out int hitColliderIndex)
         {
             hit = ColliderCastHit.Zero;
-            ColliderCastHit newHit;
             collection = null;
             hitColliderIndex = -1;
 
@@ -45,12 +44,13 @@ namespace PG.LagCompensation
                 {
                     if (SimulationObjects[i].CheckBoundingSphereDistanceTransform(origin, direction, range))
                     {
-                        if (SimulationObjects[i].ColliderCastTransform(origin, direction, range, out newHit, out hitColliderIndex))
+                        if (SimulationObjects[i].ColliderCastTransform(origin, direction, range, out ColliderCastHit newHit, out int newHitColliderIndex))
                         {
                             if (newHit.entryDistance < hit.entryDistance)
 							{
                                 collection = SimulationObjects[i];
                                 hit = newHit;
+                                hitColliderIndex = newHitColliderIndex;
                             }
                                 
                         }
@@ -64,7 +64,7 @@ namespace PG.LagCompensation
         }
 
         /// <summary>
-        /// Cehck current transform. Cast against all HitColliders in the scene
+        /// Check collision against cached transforms. Cast against all HitColliders in the scene
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="direction"></param>
@@ -74,7 +74,6 @@ namespace PG.LagCompensation
         public static bool ColliderCastTransformWithExclusion(Vector3 origin, Vector3 direction, float range, out ColliderCastHit hit, out HitColliderCollection collection, out int hitColliderIndex, HitColliderCollection exclude, bool useCachedTransforms)
         {
             hit = ColliderCastHit.Zero;
-            ColliderCastHit newHit;
             collection = null;
             hitColliderIndex = -1;
 
@@ -91,12 +90,13 @@ namespace PG.LagCompensation
                         {
                             SimulationObjects[i].SimulateFully(); // cache the locations/rotations of all managed hitColliders (if it hasn't been done already)
 
-                            if (SimulationObjects[i].ColliderCastInterpolatedFrameData(origin, direction, range, out newHit, out hitColliderIndex))
+                            if (SimulationObjects[i].ColliderCastInterpolatedFrameData(origin, direction, range, out ColliderCastHit newHit, out int newHitColliderIndex))
                             {
                                 if (newHit.entryDistance < hit.entryDistance)
                                 {
                                     collection = SimulationObjects[i];
                                     hit = newHit;
+                                    hitColliderIndex = newHitColliderIndex;
                                 }
                             }
                         }
@@ -115,12 +115,13 @@ namespace PG.LagCompensation
                     {
                         if (SimulationObjects[i].CheckBoundingSphereDistanceTransform(origin, direction, range))
                         {
-                            if (SimulationObjects[i].ColliderCastTransform(origin, direction, range, out newHit, out hitColliderIndex))
+                            if (SimulationObjects[i].ColliderCastTransform(origin, direction, range, out ColliderCastHit newHit, out int newHitColliderIndex))
                             {
                                 if (newHit.entryDistance < hit.entryDistance)
                                 {
                                     collection = SimulationObjects[i];
                                     hit = newHit;
+                                    hitColliderIndex = newHitColliderIndex;
                                 }
 
                             }
@@ -146,10 +147,7 @@ namespace PG.LagCompensation
         /// <returns></returns>
         public static bool ColliderCastInterpolatedFrameData(Vector3 origin, Vector3 direction, float range, out ColliderCastHit hit)
         {
-
             hit = ColliderCastHit.Zero;
-
-            ColliderCastHit newHit;
 
             for (int i = 0; i < SimulationObjects.Count; i++)
             {
@@ -159,10 +157,14 @@ namespace PG.LagCompensation
                     {
                         SimulationObjects[i].SimulateFully(); // cache the locations/rotations of all managed hitColliders (if it hasn't been done already)
 
-                        if (SimulationObjects[i].ColliderCastInterpolatedFrameData(origin, direction, range, out newHit, out int test))
+                        if (SimulationObjects[i].ColliderCastInterpolatedFrameData(origin, direction, range, out ColliderCastHit newHit, out int newHitColliderIndex))
                         {
                             if (newHit.entryDistance < hit.entryDistance)
+							{
                                 hit = newHit;
+                            }
+                                
+                                
                         }
                     }
                 }
