@@ -7,6 +7,8 @@ Explained by Yahn W. Bernier [here](https://developer.valvesoftware.com/wiki/Lat
 
 My initial solution is also inspired by [this](https://twoten.dev/lag-compensation-in-unity.html)
 
+Godot engine version can be found [here](https://github.com/Glitshy/Godot-Lag-Compensation)
+
 # What's included
 This project contains two systems: 
 - My initial approach which functions by setting the transforms of each individual collider of each player to the postion and rotation it was a given time ago
@@ -46,7 +48,7 @@ A radius value should be set to cover all colliders (keep in mind animations). T
 
 ## "ColliderCastSystem"
 Class containing a static list of all "HitColliderCollection" components and the functions to simulate the postions and rotations at a give point in time and perform a collider cast.
-When calling the <code>Simulate(double simulationTime)</code> function, at first only the postions and rotations of the collection components will be interpolated. The interpolation logic of each individual collider will only be performed if the bounding sphere of the collection intersects with a collider cast.
+When calling the <code>Simulate(double simulationTime)</code> function, at first only the positions and rotations of the collection components will be interpolated. The interpolation logic of each individual collider will only be performed if the bounding sphere of the collection intersects with a collider cast.
 
 # Unity Version
 Created with Unity Version 2021.2.0b12, but should work with any newer version and probably most older versions as well.
