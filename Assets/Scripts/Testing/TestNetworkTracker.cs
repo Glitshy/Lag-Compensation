@@ -73,10 +73,10 @@ public class TestNetworkTracker : MonoBehaviour
 
                 break;
 
-            case TestType.testPhysicsRaycast:
+            case TestType.testColliderCast:
                 TestParametric(Time.timeAsDouble - catchUpTime);
                 break;
-            case TestType.testColliderCast:
+            case TestType.testPhysicsRaycast:
                 TestPhysics(Time.timeAsDouble - catchUpTime);
                 break;
 
